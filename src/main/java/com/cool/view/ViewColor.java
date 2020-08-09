@@ -1,6 +1,6 @@
 package com.cool.view;
 
-enum Color {
+enum ViewColor {
     //Color end string, color reset
     RESET("\033[0m"),
 
@@ -76,7 +76,7 @@ enum Color {
 
     private final String code;
 
-    Color(String code) {
+    ViewColor(String code) {
         this.code = code;
     }
 
@@ -86,6 +86,6 @@ enum Color {
     }
 
     public String fillText(String text) {
-        return this.toString() + text + Color.RESET;
+        return this.toString() + text + ViewColor.RESET;
     }
 }
