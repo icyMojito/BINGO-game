@@ -1,16 +1,17 @@
-package bingo;
+package com.cool.bingo;
 
-import exception.InvalidBingoSizeException;
+import com.cool.exception.InvalidBingoSizeException;
 
 public class BingoSize {
     private static final int MIN_SIZE = 3;
     private static final int MAX_SIZE = 8;
+    private static final InvalidBingoSizeException INVALID_BINGO_SIZE_EXCEPTION = new InvalidBingoSizeException();
 
     private final int value;
 
     private BingoSize(String playerAnswer) {
         if (isNotNumber(playerAnswer) || isNotAllowedNumber(playerAnswer)) {
-            throw new InvalidBingoSizeException();
+            throw INVALID_BINGO_SIZE_EXCEPTION;
         }
         this.value = Integer.parseInt(playerAnswer);
     }
@@ -20,10 +21,11 @@ public class BingoSize {
     }
 
     private boolean isNotNumber(String playerAnswer) {
-        try {
-            Integer.parseInt(playerAnswer);
-        } catch (NumberFormatException e) {
-            return true;
+        for (int i = 0; i < playerAnswer.length(); i++) {
+            char c = playerAnswer.charAt(i);
+            if (c < '0' || '9' < c) {
+                return true;
+            }
         }
         return false;
     }
