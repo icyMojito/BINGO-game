@@ -56,4 +56,8 @@ public class BingoBoard {
         }
         return false;
     }
+
+    public int[][] getCells() {
+        return cells;
+    }
 }
