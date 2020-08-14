@@ -41,6 +41,22 @@ public class OutputView {
         bufferedWriter.flush();
     }
 
+    public static void printRequestForBingoNumber(int totalBingoNumbersCount, int maxNumber) throws IOException {
+        bufferedWriter.write("👼🏼 " + ViewColor.MAGENTA_BOLD.fillText("빙고에 넣을 숫자 " + totalBingoNumbersCount + "개")
+                                 + "를 입력해 주세요!");
+        bufferedWriter.newLine();
+        bufferedWriter.write("⚠️ 빙고의 숫자는 " + ViewColor.YELLOW_UNDERLINED.fillText("1부터 " + maxNumber + "까지")
+                                 + " 입력할 수 있으며, " + ViewColor.RED_BOLD.fillText("숫자만") + " 입력 가능해요.");
+        bufferedWriter.newLine();
+
+        bufferedWriter.flush();
+    }
+
+    public static void printRequestForNumberInput() throws IOException {
+        bufferedWriter.write("➡️ ");
+        bufferedWriter.flush();
+    }
+
     public static void close() throws IOException {
         bufferedWriter.close();
     }
