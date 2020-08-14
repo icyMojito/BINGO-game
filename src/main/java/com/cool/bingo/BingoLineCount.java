@@ -35,4 +35,16 @@ public class BingoLineCount {
 
         return number < MIN_SIZE || MAX_SIZE < number;
     }
+
+    public int computeTotalBingoNumbersCount() {
+        return (int) Math.pow(this.value, 2);
+    }
+
+    public int computeBingoMaxNumber() {
+        return (int) Math.pow(this.value, 2) * 2;
+    }
+
+    public int getValue() {
+        return value;
+    }
 }
