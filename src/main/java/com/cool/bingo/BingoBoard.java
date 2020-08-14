@@ -10,14 +10,15 @@ public class BingoBoard {
     private final int maxNumber;
     private final int[][] cells;
 
-    private BingoBoard(BingoLineCount bingoLineCount, int totalBingoNumbersCount, int maxNumber) {
+    private BingoBoard(BingoLineCount bingoLineCount) {
         this.bingoLineCount = bingoLineCount;
-        this.maxNumber = maxNumber;
-        this.cells = new int[totalBingoNumbersCount][totalBingoNumbersCount];
+        this.maxNumber = bingoLineCount.computeBingoMaxNumber();
+        int bingoLineCountValue = bingoLineCount.getValue();
+        this.cells = new int[bingoLineCountValue][bingoLineCountValue];
     }
 
-    public static BingoBoard of(BingoLineCount bingoLineCount, int bingoNumberCount, int maxNumber) {
-        return new BingoBoard(bingoLineCount, bingoNumberCount, maxNumber);
+    public static BingoBoard of(BingoLineCount bingoLineCount) {
+        return new BingoBoard(bingoLineCount);
     }
 
     public void fillNumber(int order, String playerAnswer) {

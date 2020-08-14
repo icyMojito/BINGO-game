@@ -16,10 +16,8 @@ public class BingoBoardTest {
     @BeforeAll
     void setUp() {
         BingoLineCount bingoLineCount = BingoLineCount.from("8");
-        int totalBingoNumbersCount = bingoLineCount.computeTotalBingoNumbersCount();
-        int bingoMaxNumber = bingoLineCount.computeBingoMaxNumber();
 
-        this.bingoBoard = BingoBoard.of(bingoLineCount, totalBingoNumbersCount, bingoMaxNumber);
+        this.bingoBoard = BingoBoard.of(bingoLineCount);
     }
 
     @DisplayName("빙고판에 숫자가 아닌 값을 넣을 때 예외가 발생한다.")
@@ -34,7 +32,7 @@ public class BingoBoardTest {
 
     @DisplayName("빙고판에 정해진 범위의 숫자가 아닌 값을 넣을 때 예외가 발생한다.")
     @ParameterizedTest
-    @ValueSource(strings = {"0", "65", "77", "100"})
+    @ValueSource(strings = {"0", "129", "345", "1_000"})
     void fillOutOfRangeNumberThenThrowException(String input) {
         int tempOrder = 0;
 
