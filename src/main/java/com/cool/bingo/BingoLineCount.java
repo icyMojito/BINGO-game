@@ -1,23 +1,23 @@
 package com.cool.bingo;
 
-import com.cool.exception.InvalidBingoSizeException;
+import com.cool.exception.InvalidBingoLineCountException;
 
-public class BingoSize {
+public class BingoLineCount {
     private static final int MIN_SIZE = 3;
     private static final int MAX_SIZE = 8;
-    private static final InvalidBingoSizeException INVALID_BINGO_SIZE_EXCEPTION = new InvalidBingoSizeException();
+    private static final InvalidBingoLineCountException INVALID_BINGO_LINE_COUNT_EXCEPTION = new InvalidBingoLineCountException();
 
     private final int value;
 
-    private BingoSize(String playerAnswer) {
+    private BingoLineCount(String playerAnswer) {
         if (isNotNumber(playerAnswer) || isNotAllowedNumber(playerAnswer)) {
-            throw INVALID_BINGO_SIZE_EXCEPTION;
+            throw INVALID_BINGO_LINE_COUNT_EXCEPTION;
         }
         this.value = Integer.parseInt(playerAnswer);
     }
 
-    public static BingoSize from(String playerAnswer) {
-        return new BingoSize(playerAnswer);
+    public static BingoLineCount from(String playerAnswer) {
+        return new BingoLineCount(playerAnswer);
     }
 
     private boolean isNotNumber(String playerAnswer) {
