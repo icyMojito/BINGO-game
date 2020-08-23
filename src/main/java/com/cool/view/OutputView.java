@@ -8,6 +8,8 @@ public class OutputView {
     private static final BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(System.out));
     private static final String NEW_LINE = System.lineSeparator();
     private static final String SPACE = " ";
+    public static final String NUMBER_DELIMITER = ",";
+    private static final String DOUBLE_SPACE = "  ";
 
     public static void printRequestForBingoSize() throws IOException {
         bufferedWriter.write("👼🏼 " + ViewColor.MAGENTA_BOLD.fillText("빙고판의 크기") + "를 입력해 주세요!");
@@ -43,12 +45,15 @@ public class OutputView {
         bufferedWriter.flush();
     }
 
-    public static void printRequestForBingoNumber(int totalBingoNumbersCount, int maxNumber) throws IOException {
+    public static void printRequestForBingoNumber(int totalBingoNumbersCount, int bingoLineCount, int maxNumber) throws IOException {
         bufferedWriter.write("👼🏼 " + ViewColor.MAGENTA_BOLD.fillText("빙고에 넣을 숫자 " + totalBingoNumbersCount + "개")
-                                     + "를 입력해 주세요!");
+                                     + "를 한 줄(" + bingoLineCount + "개)씩 입력해 주세요!");
+        bufferedWriter.newLine();
+        bufferedWriter.write("숫자 사이는 \"" + NUMBER_DELIMITER + "\"로 구별이 필요해요. 꼭 넣어주세요~");
         bufferedWriter.newLine();
         bufferedWriter.write("⚠️ 빙고의 숫자는 " + ViewColor.YELLOW_UNDERLINED.fillText("1부터 " + maxNumber + "까지")
-                                     + " 입력할 수 있으며, " + ViewColor.RED_BOLD.fillText("숫자만") + " 입력 가능해요.");
+                                     + " 입력할 수 있으며, " + ViewColor.BLACK_BOLD.fillText("숫자만 ")
+                                     + ViewColor.BLUE_BOLD.fillText("중복 없이") + " 입력 가능해요.");
         bufferedWriter.newLine();
 
         bufferedWriter.flush();
@@ -66,7 +71,7 @@ public class OutputView {
             for (int col = 0; col < cells[row].length; col++) {
                 String value = cells[row][col] == 0 ? "X" : String.valueOf(cells[row][col]);
                 bingoBoard.append(value)
-                        .append(SPACE);
+                        .append(value.length() == 1 ? DOUBLE_SPACE : SPACE);
             }
             bingoBoard.append(NEW_LINE);
         }
