@@ -1,38 +1,40 @@
 package com.cool.bingo;
 
 import com.cool.exception.InvalidBingoTypeException;
+import com.cool.util.StringUtils;
 
-public class BingoType {
+import java.util.Arrays;
+import java.util.Random;
+
+public enum BingoType {
+    BLACK("B"),
+    NUMBER("N");
+
+    private static final Random R = new Random();
+
     private static final String RANDOM = "R";
-    private static final String BLACK = "B";
-    private static final String NUMBER = "N";
-    private static final String[] typeLetter = {BLACK, NUMBER};
     private static final InvalidBingoTypeException INVALID_BINGO_TYPE_EXCEPTION = new InvalidBingoTypeException();
 
-    private final String type;
+    private final String code;
 
-    private BingoType(String playerAnswer) {
-        validateAnswer(playerAnswer);
-        this.type = transformType(playerAnswer);
+    BingoType(String code) {
+        this.code = code;
     }
 
-    public static BingoType from(String playerAnswer) {
-        return new BingoType(playerAnswer);
-    }
+    public static BingoType from(String bingoCode) {
+        StringUtils.validateNonNullAndNotEmpty(bingoCode);
 
-    private void validateAnswer(String playerAnswer) {
-        playerAnswer = playerAnswer.toUpperCase();
-        if (!playerAnswer.equals(BLACK) && !playerAnswer.equals(NUMBER) && !playerAnswer.equals(RANDOM)) {
-            throw INVALID_BINGO_TYPE_EXCEPTION;
-        }
-    }
-
-    private String transformType(String playerAnswer) {
-        if (playerAnswer.equals(RANDOM)) {
-            int i = (int) (Math.random() * 2);
-            return typeLetter[i];
+        if (RANDOM.equalsIgnoreCase(bingoCode)) {
+            boolean isBlack = R.nextBoolean();
+            if (isBlack) {
+                return BLACK;
+            }
+            return NUMBER;
         }
 
-        return playerAnswer.equals(BLACK) ? BLACK : NUMBER;
+        return Arrays.stream(BingoType.values())
+                .filter(type -> type.code.equalsIgnoreCase(bingoCode))
+                .findFirst()
+                .orElseThrow(() -> INVALID_BINGO_TYPE_EXCEPTION);
     }
 }
