@@ -1,15 +1,19 @@
 package com.cool.view;
 
+import com.cool.bingo.BingoNumber;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.Objects;
 
 public class OutputView {
     private static final BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(System.out));
     private static final String NEW_LINE = System.lineSeparator();
     private static final String SPACE = " ";
-    public static final String NUMBER_DELIMITER = ",";
     private static final String DOUBLE_SPACE = "  ";
+    private static final String TRIPLE_SPACE = "   ";
+    public static final String NUMBER_DELIMITER = ",";
 
     public static void printRequestForBingoSize() throws IOException {
         bufferedWriter.write("👼🏼 " + ViewColor.MAGENTA_BOLD.fillText("빙고판의 크기") + "를 입력해 주세요!");
@@ -45,7 +49,10 @@ public class OutputView {
         bufferedWriter.flush();
     }
 
-    public static void printRequestForBingoNumber(int totalBingoNumbersCount, int bingoLineCount, int maxNumber) throws IOException {
+    public static void printRequestForBingoNumber(int bingoLineCount) throws IOException {
+        int totalBingoNumbersCount = (int) Math.pow(bingoLineCount, 2);
+        int maxNumber = (int) Math.pow(bingoLineCount, 2) * 2;
+
         bufferedWriter.write("👼🏼 " + ViewColor.MAGENTA_BOLD.fillText("빙고에 넣을 숫자 " + totalBingoNumbersCount + "개")
                                      + "를 한 줄(" + bingoLineCount + "개)씩 입력해 주세요!");
         bufferedWriter.newLine();
@@ -64,14 +71,16 @@ public class OutputView {
         bufferedWriter.flush();
     }
 
-    public static void printBingoBoard(int[][] cells) throws IOException {
+    public static void printBingoBoard(BingoNumber[][] cells) throws IOException {
         StringBuilder bingoBoard = new StringBuilder();
 
         for (int row = 0; row < cells.length; row++) {
             for (int col = 0; col < cells[row].length; col++) {
-                String value = cells[row][col] == 0 ? "X" : String.valueOf(cells[row][col]);
+                BingoNumber bingoNumber = cells[row][col];
+                String value = Objects.isNull(bingoNumber) ? "." : bingoNumber.getValue();
+                String space = value.length() == 1 ? TRIPLE_SPACE : value.length() == 2 ? DOUBLE_SPACE : SPACE;
                 bingoBoard.append(value)
-                        .append(value.length() == 1 ? DOUBLE_SPACE : SPACE);
+                        .append(space);
             }
             bingoBoard.append(NEW_LINE);
         }

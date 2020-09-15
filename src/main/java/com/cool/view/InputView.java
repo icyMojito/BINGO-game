@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 public class InputView {
     private static final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-    public static String requestPlayerAnswer() throws IOException {
+    public static String requestPlayerInput() throws IOException {
         return bufferedReader.readLine();
     }
 
