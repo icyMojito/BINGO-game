@@ -44,20 +44,20 @@ public class BingoSize {
         }
     }
 
-    public BingoNumber[][] createCells() {
-        return new BingoNumber[this.value][this.value];
-    }
-
-    public boolean isBiggerThan(int lineOrder) {
-        return lineOrder < this.value;
-    }
-
     public boolean isBiggerThanMaxNumber(int number) {
-        int maxNumber = (int) Math.pow(this.value, 2) * 2;
+        int maxNumber = getSize() * 2;
         return maxNumber < number;
     }
 
-    public int getValue() {
-        return value;
+    public boolean isSmallerThan(int size) {
+        return getSize() < size;
+    }
+
+    public boolean isBiggerThan(int size) {
+        return !isSmallerThan(size);
+    }
+
+    public int getSize() {
+        return (int) Math.pow(this.value, 2);
     }
 }
