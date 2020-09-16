@@ -11,9 +11,7 @@ public enum BingoType {
     NUMBER("N");
 
     private static final Random R = new Random();
-
     private static final String RANDOM = "R";
-    private static final InvalidBingoTypeException INVALID_BINGO_TYPE_EXCEPTION = new InvalidBingoTypeException();
 
     private final String code;
 
@@ -35,6 +33,6 @@ public enum BingoType {
         return Arrays.stream(BingoType.values())
                 .filter(type -> type.code.equalsIgnoreCase(bingoCode))
                 .findFirst()
-                .orElseThrow(() -> INVALID_BINGO_TYPE_EXCEPTION);
+                .orElseThrow(() -> new InvalidBingoTypeException(bingoCode));
     }
 }
