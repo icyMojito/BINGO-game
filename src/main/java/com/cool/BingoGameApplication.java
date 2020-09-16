@@ -1,10 +1,9 @@
 package com.cool;
 
 import com.cool.bingo.BingoBoard;
-import com.cool.bingo.BingoLineCount;
+import com.cool.bingo.BingoNumbers;
+import com.cool.bingo.BingoSize;
 import com.cool.bingo.BingoType;
-import com.cool.exception.InvalidBingoLineCountException;
-import com.cool.exception.InvalidBingoTypeException;
 import com.cool.view.InputView;
 import com.cool.view.OutputView;
 
@@ -12,19 +11,20 @@ import java.io.IOException;
 
 public class BingoGameApplication {
     public static void main(String[] args) throws IOException {
-        BingoLineCount bingoLineCount = createBingoSize();
+        BingoSize bingoSize = createBingoSize();
         BingoType bingoType = createBingoType();
-        BingoBoard userBingoBoard = BingoBoard.of(bingoLineCount);
-        fillUserBingoBoard(userBingoBoard, bingoLineCount);
+        BingoBoard userBingoBoard = new BingoBoard(bingoSize);
+        addNumbersToBingoBoard(userBingoBoard, bingoSize);
     }
 
-    private static BingoLineCount createBingoSize() throws IOException {
+    private static BingoSize createBingoSize() throws IOException {
         while (true) {
             OutputView.printRequestForBingoSize();
-            String playerAnswer = InputView.requestPlayerAnswer();
+            String bingoSize = InputView.requestPlayerInput();
             try {
-                return BingoLineCount.from(playerAnswer);
-            } catch (InvalidBingoLineCountException ignored) {
+                return BingoSize.from(bingoSize);
+            } catch (RuntimeException e) {
+                OutputView.printExceptionMessage(e);
             }
         }
     }
@@ -32,24 +32,29 @@ public class BingoGameApplication {
     private static BingoType createBingoType() throws IOException {
         while (true) {
             OutputView.printRequestForBingoType();
-            String playerAnswer = InputView.requestPlayerAnswer();
+            String bingoType = InputView.requestPlayerInput();
             try {
-                return BingoType.from(playerAnswer);
-            } catch (InvalidBingoTypeException ignored) {
+                return BingoType.from(bingoType);
+            } catch (RuntimeException e) {
+                OutputView.printExceptionMessage(e);
             }
         }
     }
 
-    private static void fillUserBingoBoard(BingoBoard bingoBoard, BingoLineCount bingoLineCount) throws IOException {
-        int totalBingoNumbersCount = bingoLineCount.computeTotalBingoNumbersCount();
-        int maxNumber = bingoLineCount.computeBingoMaxNumber();
+    private static void addNumbersToBingoBoard(BingoBoard bingoBoard, BingoSize bingoSize) throws IOException {
+        OutputView.printRequestForBingoNumber(bingoSize);
 
-        OutputView.printRequestForBingoNumber(totalBingoNumbersCount, maxNumber);
-        for (int order = 0; order < totalBingoNumbersCount; order++) {
+        while (bingoBoard.hasNeedMoreNumbers()) {
             OutputView.printRequestForNumberInput();
-            String playerAnswer = InputView.requestPlayerAnswer();
-            bingoBoard.fillNumber(order, playerAnswer);
-            OutputView.printBingoBoard(bingoBoard.getCells());
+            String bingoNumbersValue = InputView.requestPlayerInput();
+            try {
+                BingoNumbers bingoNumbers = BingoNumbers.of(bingoNumbersValue, bingoSize);
+                bingoBoard.addNumbers(bingoNumbers);
+                OutputView.printBingoBoard(bingoSize, bingoBoard.getBingoNumbers());
+            } catch (RuntimeException e) {
+                OutputView.printExceptionMessage(e);
+                OutputView.printRequestForBingoNumber(bingoSize);
+            }
         }
     }
 }

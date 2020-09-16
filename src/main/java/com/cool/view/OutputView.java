@@ -53,9 +53,9 @@ public class OutputView {
         bufferedWriter.flush();
     }
 
-    public static void printRequestForBingoNumber(int bingoLineCount) throws IOException {
-        int totalBingoNumbersCount = (int) Math.pow(bingoLineCount, 2);
-        int maxNumber = (int) Math.pow(bingoLineCount, 2) * 2;
+    public static void printRequestForBingoNumber(BingoSize bingoSize) throws IOException {
+        int totalBingoNumbersCount = bingoSize.getSize();
+        int maxNumber = totalBingoNumbersCount * 2;
 
         bufferedWriter.write("👼🏼 " + ViewColor.MAGENTA_BOLD.fillText("빙고에 넣을 숫자 " + totalBingoNumbersCount + "개")
                                      + "를 입력해 주세요! "
