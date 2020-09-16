@@ -26,14 +26,14 @@ public class BingoNumber {
 
     private static void validateNumberFormat(String number) {
         Supplier<RuntimeException> exceptionSupplier = () -> new InvalidBingoNumberException(
-                "💥 숫자가 아닌 값이 입력되었어요! → " + number);
+                "숫자가 아닌 값이 입력되었어요! → " + number);
 
         StringUtils.validateNumberFormat(exceptionSupplier, number);
     }
 
     private static void validateNumberRange(int number, BingoSize bingoSize) {
         if (number < MIN_NUMBER || bingoSize.isBiggerThanMaxNumber(number)) {
-            throw new InvalidBingoNumberException("💥 입력할 수 없는 범위의 숫자가 있습니다! → " + number);
+            throw new InvalidBingoNumberException("입력할 수 없는 범위의 숫자가 있습니다! → " + number);
         }
     }
 
