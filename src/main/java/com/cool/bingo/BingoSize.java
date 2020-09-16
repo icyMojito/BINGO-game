@@ -50,7 +50,7 @@ public class BingoSize {
     }
 
     public boolean isSmallerThan(int size) {
-        return getSize() < size;
+        return getSize() <= size;
     }
 
     public boolean isBiggerThan(int size) {

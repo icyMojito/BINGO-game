@@ -1,11 +1,15 @@
 package com.cool.view;
 
 import com.cool.bingo.BingoNumber;
+import com.cool.bingo.BingoNumbers;
+import com.cool.bingo.BingoSize;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.util.Objects;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class OutputView {
     private static final BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -54,9 +58,12 @@ public class OutputView {
         int maxNumber = (int) Math.pow(bingoLineCount, 2) * 2;
 
         bufferedWriter.write("👼🏼 " + ViewColor.MAGENTA_BOLD.fillText("빙고에 넣을 숫자 " + totalBingoNumbersCount + "개")
-                                     + "를 한 줄(" + bingoLineCount + "개)씩 입력해 주세요!");
+                                     + "를 입력해 주세요! "
+                                     + ViewColor.MAGENTA_BOLD.fillText("한 번에 1개부터 최대 " + totalBingoNumbersCount +
+                                                                               "개까지 ")
+                                     + "적을 수 있어요.");
         bufferedWriter.newLine();
-        bufferedWriter.write("숫자 사이는 \"" + NUMBER_DELIMITER + "\"로 구별이 필요해요. 꼭 넣어주세요~");
+        bufferedWriter.write("숫자 사이는 \"" + ViewColor.MAGENTA.fillText(NUMBER_DELIMITER) + "\"로 구별이 필요해요. 꼭 넣어주세요~");
         bufferedWriter.newLine();
         bufferedWriter.write("⚠️ 빙고의 숫자는 " + ViewColor.YELLOW_UNDERLINED.fillText("1부터 " + maxNumber + "까지")
                                      + " 입력할 수 있으며, " + ViewColor.BLACK_BOLD.fillText("숫자만 ")
@@ -71,21 +78,38 @@ public class OutputView {
         bufferedWriter.flush();
     }
 
-    public static void printBingoBoard(BingoNumber[][] cells) throws IOException {
+    public static void printBingoBoard(BingoSize bingoSize, BingoNumbers bingoNumbers) throws IOException {
+        int bingoSizeValue = bingoSize.getSize();
+        int columnCount = (int) Math.sqrt(bingoSizeValue);
+        LinkedHashSet<BingoNumber> numbers = bingoNumbers.getNumbers();
         StringBuilder bingoBoard = new StringBuilder();
 
-        for (int row = 0; row < cells.length; row++) {
-            for (int col = 0; col < cells[row].length; col++) {
-                BingoNumber bingoNumber = cells[row][col];
-                String value = Objects.isNull(bingoNumber) ? "." : bingoNumber.getValue();
-                String space = value.length() == 1 ? TRIPLE_SPACE : value.length() == 2 ? DOUBLE_SPACE : SPACE;
-                bingoBoard.append(value)
-                        .append(space);
+        List<String> nums = numbers.stream()
+                .map(BingoNumber::getValue)
+                .collect(Collectors.toList());
+
+        int columnIndex = 0;
+        for (int i = 0; i < bingoSizeValue; i++) {
+            String num = i < nums.size() ? nums.get(i) : ".";
+            String space = num.length() == 1 ? TRIPLE_SPACE : num.length() == 2 ? DOUBLE_SPACE : SPACE;
+            bingoBoard.append(num)
+                    .append(space);
+            columnIndex++;
+            if (columnIndex == columnCount) {
+                bingoBoard.append(NEW_LINE);
+                columnIndex = 0;
             }
-            bingoBoard.append(NEW_LINE);
         }
 
         bufferedWriter.write(bingoBoard.toString());
+        bufferedWriter.flush();
+    }
+
+    public static void printExceptionMessage(Exception e) throws IOException {
+        bufferedWriter.write("💥😱 ");
+        bufferedWriter.write(e.getMessage());
+        bufferedWriter.write(NEW_LINE);
+        bufferedWriter.write(NEW_LINE);
         bufferedWriter.flush();
     }
 
