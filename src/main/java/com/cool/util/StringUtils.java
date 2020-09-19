@@ -10,6 +10,7 @@ public class StringUtils {
 
     public static void validateNonNullAndNotEmpty(String value) {
         Optional.ofNullable(value)
+                .map(String::trim)
                 .filter(v -> !v.isEmpty())
                 .orElseThrow(() -> new IllegalArgumentException("null 혹은 빈 값이 매개변수로 들어왔습니다!"));
     }

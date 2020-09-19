@@ -3,11 +3,13 @@ package com.cool.bingo;
 import com.cool.exception.InvalidBingoSizeException;
 import com.cool.util.StringUtils;
 
+import java.util.Random;
 import java.util.function.Supplier;
 
 public class BingoSize {
     private static final int MIN_VALUE = 3;
     private static final int MAX_VALUE = 8;
+    private static final Random RANDOM = new Random();
 
     private final int value;
 
@@ -49,12 +51,16 @@ public class BingoSize {
         return maxNumber < number;
     }
 
-    public boolean isSmallerThan(int size) {
-        return getSize() <= size;
+    public boolean isBiggerThan(int size) {
+        return size < getSize();
     }
 
-    public boolean isBiggerThan(int size) {
-        return !isSmallerThan(size);
+    public boolean isSmallerThan(int size) {
+        return getSize() < size;
+    }
+
+    public int createRandomNumber() {
+        return Math.min(RANDOM.nextInt(getSize() * 2) + 1, getSize() * 2);
     }
 
     public int getSize() {

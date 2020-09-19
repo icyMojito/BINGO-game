@@ -24,6 +24,12 @@ public class BingoNumber {
         return new BingoNumber(value);
     }
 
+    public static BingoNumber from(int value) {
+        String number = String.valueOf(value);
+
+        return new BingoNumber(number);
+    }
+
     private static void validateNumberFormat(String number) {
         Supplier<RuntimeException> exceptionSupplier = () -> new InvalidBingoNumberException(
                 "숫자가 아닌 값이 입력되었어요! → " + number);
@@ -39,6 +45,14 @@ public class BingoNumber {
 
     public void mark() {
         this.value = MARKED;
+    }
+
+    public boolean isRemoved() {
+        return this.value.equals(MARKED);
+    }
+
+    public boolean isNumber() {
+        return !isRemoved();
     }
 
     public String getValue() {

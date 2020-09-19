@@ -1,16 +1,16 @@
 package com.cool.bingo;
 
+import com.cool.exception.InvalidBingoNumberException;
 import com.cool.util.StringUtils;
 
-import java.util.LinkedHashSet;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class BingoNumbers {
     private static final String NUMBER_DELIMITER = ",";
 
     private final LinkedHashSet<BingoNumber> numbers;
 
-    private BingoNumbers(LinkedHashSet<BingoNumber> numbers) {
+    public BingoNumbers(LinkedHashSet<BingoNumber> numbers) {
         this.numbers = numbers;
     }
 
@@ -36,6 +36,18 @@ public class BingoNumbers {
         return new BingoNumbers(new LinkedHashSet<>());
     }
 
+    public static BingoNumbers createRandomBingoNumbers(BingoSize bingoSize) {
+        LinkedHashSet<BingoNumber> bingoNums = new LinkedHashSet<>();
+
+        while (bingoSize.isBiggerThan(bingoNums.size())) {
+            int number = bingoSize.createRandomNumber();
+            BingoNumber bingoNumber = BingoNumber.from(number);
+            bingoNums.add(bingoNumber);
+        }
+
+        return new BingoNumbers(bingoNums);
+    }
+
     public BingoNumbers add(BingoNumbers bingoNumbers) {
         LinkedHashSet<BingoNumber> numbers = new LinkedHashSet<>(this.numbers);
         numbers.addAll(bingoNumbers.numbers);
@@ -43,11 +55,42 @@ public class BingoNumbers {
         return new BingoNumbers(numbers);
     }
 
-    public boolean isSmallerThan(BingoSize bingoSize) {
-        return bingoSize.isBiggerThan(this.numbers.size());
+    public void markBingoNumber(BingoNumber bingoNumberToRemove) {
+        this.numbers.stream()
+                .filter(bingoNumber -> bingoNumber.equals(bingoNumberToRemove))
+                .findFirst()
+                .ifPresent(BingoNumber::mark);
     }
 
-    public LinkedHashSet<BingoNumber> getNumbers() {
-        return numbers;
+    public BingoNumber getRandomBingoNumber() {
+        return this.numbers.stream()
+                .filter(BingoNumber::isNumber)
+                .findFirst()
+                .orElseThrow(() -> new InvalidBingoNumberException("더 이상 남아있는 숫자가 없습니다!"));
+    }
+
+    public boolean isAllRemoved() {
+        return this.numbers.stream()
+                .allMatch(BingoNumber::isRemoved);
+    }
+
+    public int calculateSizeGap(BingoSize bingoSize) {
+        return this.numbers.size() - bingoSize.getSize();
+    }
+
+    public BingoNumbers reduce(BingoSize bingoSize) {
+        ArrayList<BingoNumber> numbers = new ArrayList<>(this.numbers);
+
+        while (bingoSize.isSmallerThan(numbers.size())) {
+            numbers.remove(numbers.size() - 1);
+        }
+
+        LinkedHashSet<BingoNumber> newBingoNumbers = new LinkedHashSet<>(numbers);
+
+        return new BingoNumbers(newBingoNumbers);
+    }
+
+    public Set<BingoNumber> getNumbers() {
+        return Collections.unmodifiableSet(numbers);
     }
 }
