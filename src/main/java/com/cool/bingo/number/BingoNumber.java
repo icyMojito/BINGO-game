@@ -1,5 +1,6 @@
-package com.cool.bingo;
+package com.cool.bingo.number;
 
+import com.cool.bingo.BingoSize;
 import com.cool.exception.InvalidBingoNumberException;
 import com.cool.util.StringUtils;
 
@@ -47,12 +48,12 @@ public class BingoNumber {
         this.value = MARKED;
     }
 
-    public boolean isRemoved() {
+    public boolean isMarked() {
         return this.value.equals(MARKED);
     }
 
     public boolean isNumber() {
-        return !isRemoved();
+        return !isMarked();
     }
 
     public String getValue() {
