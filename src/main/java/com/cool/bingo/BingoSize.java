@@ -1,8 +1,10 @@
 package com.cool.bingo;
 
+import com.cool.bingo.number.BingoNumber;
 import com.cool.exception.InvalidBingoSizeException;
 import com.cool.util.StringUtils;
 
+import java.util.Iterator;
 import java.util.Random;
 import java.util.function.Supplier;
 
@@ -59,11 +61,31 @@ public class BingoSize {
         return getSize() < size;
     }
 
+    public boolean isSmallerAndEqualThan(int countMarkedLine) {
+        return this.value <= countMarkedLine;
+    }
+
     public int createRandomNumber() {
         return Math.min(RANDOM.nextInt(getSize() * 2) + 1, getSize() * 2);
     }
 
+    public BingoNumber[][] create2dBingoNumbers(Iterator<BingoNumber> iterator) {
+        BingoNumber[][] bingoNumbers = new BingoNumber[this.value][this.value];
+
+        for (int row = 0; row < bingoNumbers.length; row++) {
+            for (int col = 0; col < bingoNumbers[row].length; col++) {
+                bingoNumbers[row][col] = iterator.next();
+            }
+        }
+
+        return bingoNumbers;
+    }
+
     public int getSize() {
         return (int) Math.pow(this.value, 2);
+    }
+
+    public int getValue() {
+        return value;
     }
 }
