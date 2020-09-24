@@ -35,4 +35,8 @@ public enum BingoType {
                 .findFirst()
                 .orElseThrow(() -> new InvalidBingoTypeException(bingoCode));
     }
+
+    public String getCode() {
+        return code;
+    }
 }

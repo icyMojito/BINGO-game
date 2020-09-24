@@ -119,14 +119,17 @@ public class OutputView {
         bufferedWriter.flush();
     }
 
-    public static void printRequestToMarkBingoNumber(BingoSize bingoSize) throws IOException {
+    public static void printRequestToMarkBingoNumber(BingoType bingoType, BingoSize bingoSize) throws IOException {
         int totalBingoNumbersCount = bingoSize.getSize();
         int maxNumber = totalBingoNumbersCount * 2;
+        int bingoSizeValue = bingoSize.getValue();
+        String bingoTypeCode = bingoType.getCode().equals("B") ? "블랙 빙고" : bingoSizeValue + "줄 빙고";
 
         bufferedWriter.newLine();
         bufferedWriter.write("👼🏼 " + ViewColor.MAGENTA_BOLD.fillText("빙고판에서 지울 숫자")
                                      + ViewColor.RED_BOLD.fillText(" 1개")
-                                     + "를 입력해 주세요!");
+                                     + "를 입력해 주세요! "
+                                     + ViewColor.GREEN_BOLD.fillText(bingoTypeCode) + "가 승리 조건이에요.");
         bufferedWriter.newLine();
         bufferedWriter.write("⚠️ 빙고의 숫자는 " + ViewColor.YELLOW_UNDERLINED.fillText("1부터 " + maxNumber + "까지")
                                      + " 입력할 수 있으며, " + ViewColor.BLACK_BOLD.fillText("숫자만")
@@ -137,8 +140,9 @@ public class OutputView {
         bufferedWriter.flush();
     }
 
-    public static void printNoticeForEmptyBingoNumber() throws IOException {
-        bufferedWriter.write("👼🏼 숫자를 입력하지 않았어요!");
+    public static void printNoticeForInvalidBingoNumber(String message) throws IOException {
+        bufferedWriter.write("👼🏼 숫자를 입력하지 않거나 잘못된 숫자를 넣었네요! : " + message);
+        bufferedWriter.newLine();
 
         bufferedWriter.flush();
     }
