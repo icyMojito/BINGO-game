@@ -1,15 +1,18 @@
 package com.cool.view;
 
-import com.cool.bingo.BingoNumber;
-import com.cool.bingo.BingoNumbers;
 import com.cool.bingo.BingoSize;
-import com.cool.bingo.board.UserBingoBoard;
+import com.cool.bingo.BingoType;
+import com.cool.bingo.PlayerType;
+import com.cool.bingo.board.BingoBoard;
+import com.cool.bingo.number.BingoNumber;
+import com.cool.bingo.number.BingoNumbers;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class OutputView {
     private static final BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -82,25 +85,37 @@ public class OutputView {
         bufferedWriter.flush();
     }
 
-    public static void printBingoBoard(BingoSize bingoSize, BingoNumbers bingoNumbers) throws IOException {
-        List<String> nums = bingoNumbers.getNumbers().stream()
-                .map(BingoNumber::getValue)
-                .collect(Collectors.toList());
+    public static void printBingoNumbers(BingoNumbers bingoNumbers, BingoSize bingoSize) throws IOException {
+        int size = (int) Math.sqrt(bingoSize.getSize());
+        BingoNumber[][] numbers = new BingoNumber[size][size];
+        Iterator<BingoNumber> iterator = bingoNumbers.getIterator();
 
-        int bingoSizeValue = bingoSize.getSize();
-        StringBuilder bingoBoard = new StringBuilder();
-        int columnIndex = 0;
-        int columnCount = (int) Math.sqrt(bingoSizeValue);
-        for (int i = 0; i < bingoSizeValue; i++) {
-            String num = i < nums.size() ? nums.get(i) : ".";
-            String space = num.length() == 1 ? TRIPLE_SPACE : num.length() == 2 ? DOUBLE_SPACE : SPACE;
-            bingoBoard.append(num)
-                    .append(space);
-            columnIndex++;
-            if (columnIndex == columnCount) {
-                bingoBoard.append(NEW_LINE);
-                columnIndex = 0;
+        for (int row = 0; row < numbers.length; row++) {
+            for (int col = 0; col < numbers[row].length; col++) {
+                try {
+                    numbers[row][col] = iterator.next();
+                } catch (NoSuchElementException e) {
+                    break;
+                }
             }
+        }
+
+        printBingoBoard(numbers);
+    }
+
+    public static void printBingoBoard(BingoNumber[][] bingoNumbers) throws IOException {
+        StringBuilder bingoBoard = new StringBuilder();
+
+        for (int row = 0; row < bingoNumbers.length; row++) {
+            bingoBoard.append(" ");
+            for (int col = 0; col < bingoNumbers[row].length; col++) {
+                BingoNumber bingoNumber = bingoNumbers[row][col];
+                String value = Objects.nonNull(bingoNumber) ? bingoNumber.getValue() : ".";
+                String space = value.length() == 1 ? TRIPLE_SPACE : value.length() == 2 ? DOUBLE_SPACE : SPACE;
+                bingoBoard.append(value)
+                        .append(space);
+            }
+            bingoBoard.append(NEW_LINE);
         }
 
         bufferedWriter.write("----빙고판----");
@@ -109,6 +124,15 @@ public class OutputView {
         bufferedWriter.write("------------");
         bufferedWriter.newLine();
         bufferedWriter.flush();
+    }
+
+    public static void printWinBingoBoard(BingoNumber[][] bingoNumbers, PlayerType playerType) throws IOException {
+        String winner = playerType == PlayerType.USER ? "사용자" : "컴퓨터";
+
+        bufferedWriter.write("💘 " + winner + " BINGO 💘");
+        bufferedWriter.newLine();
+
+        printBingoBoard(bingoNumbers);
     }
 
     public static void printExceptionMessage(Exception e) throws IOException {
@@ -155,8 +179,9 @@ public class OutputView {
         bufferedWriter.flush();
     }
 
-    public static void printGameResult(UserBingoBoard userBingoBoard) throws IOException {
-        String gameResultMessage = userBingoBoard.isBlackBingo() ? "축하합니다🎉 승리하셨어요!!!" : "안타깝게도 컴퓨터가 이겼네요..☠️";
+    public static void printGameResult(BingoBoard userBingoBoard) throws IOException {
+        String gameResultMessage = userBingoBoard.isBingo() ?
+                "축하합니다🎉 승리하셨어요!!!" : "안타깝게도 컴퓨터가 이겼네요..☠️";
 
         bufferedWriter.newLine();
         bufferedWriter.write("👼🏼 " + gameResultMessage);
