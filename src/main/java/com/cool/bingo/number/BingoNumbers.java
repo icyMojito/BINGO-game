@@ -40,15 +40,14 @@ public class BingoNumbers {
     }
 
     public static BingoNumbers createRandomBingoNumbers(BingoSize bingoSize) {
-        LinkedHashSet<BingoNumber> numbers = new LinkedHashSet<>();
+        LinkedHashSet<BingoNumber> randomBingoNumbers = new LinkedHashSet<>();
 
-        while (bingoSize.isBiggerThan(numbers.size())) {
-            int number = bingoSize.createRandomNumber();
-            BingoNumber bingoNumber = BingoNumber.from(number);
-            numbers.add(bingoNumber);
+        while (bingoSize.isBiggerThan(randomBingoNumbers.size())) {
+            BingoNumber randomBingoNumber = BingoNumber.from(bingoSize);
+            randomBingoNumbers.add(randomBingoNumber);
         }
 
-        return new BingoNumbers(numbers);
+        return new BingoNumbers(randomBingoNumbers);
     }
 
     public BingoNumbers add(BingoNumbers bingoNumbers) {

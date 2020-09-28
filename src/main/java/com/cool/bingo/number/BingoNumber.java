@@ -25,10 +25,10 @@ public class BingoNumber {
         return new BingoNumber(value);
     }
 
-    public static BingoNumber from(int value) {
-        String number = String.valueOf(value);
+    public static BingoNumber from(BingoSize bingoSize) {
+        int randomNumber = bingoSize.createRandomNumber();
 
-        return new BingoNumber(number);
+        return new BingoNumber(String.valueOf(randomNumber));
     }
 
     private static void validateNumberFormat(String number) {
