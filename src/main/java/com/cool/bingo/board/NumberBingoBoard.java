@@ -31,7 +31,7 @@ public class NumberBingoBoard extends BingoBoard {
         return this.bingoSize.isSmallerAndEqualThan(countMarkedLine());
     }
 
-    public int countMarkedLine() {
+    private int countMarkedLine() {
         int horizontalMarkedLine = countHorizontalMarkedLine();
         int verticalMarkedLine = countVerticalMarkedLine();
         int crossMarkedLine = countCrossMarkedLine();

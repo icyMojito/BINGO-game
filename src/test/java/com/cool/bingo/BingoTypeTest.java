@@ -8,7 +8,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class BingoTypeTest {
+class BingoTypeTest {
 
     @DisplayName("빙고의 종류로 적절한 문자가 입력되면 BingoType 객체가 생성된다.")
     @ParameterizedTest

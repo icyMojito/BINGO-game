@@ -11,6 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class BingoNumberTest {
+
     @DisplayName("빙고 사이즈에 따라 정해진 범위에 맞는 숫자값으로 BingoNumber 객체가 생성된다.")
     @ParameterizedTest
     @CsvSource(value = {"3,1", "3,18", "4,1", "4,32", "5,1", "5,50", "6,1", "6,72", "7,1", "7,98", "8,1", "8,128"})

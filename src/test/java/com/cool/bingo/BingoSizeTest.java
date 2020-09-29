@@ -11,7 +11,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class BingoSizeTest {
+class BingoSizeTest {
 
     @DisplayName("조건에 맞는 숫자이면 BingoSize 객체가 생성된다.")
     @ParameterizedTest

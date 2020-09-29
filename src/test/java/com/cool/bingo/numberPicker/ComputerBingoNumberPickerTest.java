@@ -11,13 +11,13 @@ import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ComputerBingoNumberPickerTest {
+class ComputerBingoNumberPickerTest {
     private BingoNumber[][] bingoNumbers;
-    /*
-     * X 2 3
-     * 4 X 6
-     * 7 8 9
-     * */
+    /* 빙고숫자배열
+    X 2 3
+    4 X 6
+    7 8 9
+     */
 
     @BeforeEach
     void setUp() {

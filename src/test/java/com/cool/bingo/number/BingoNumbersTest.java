@@ -14,7 +14,8 @@ import java.util.StringTokenizer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BingoNumbersTest {
+class BingoNumbersTest {
+
     @DisplayName("빙고 사이즈에 따라 정해진 범위에 맞는 복수의 숫자값으로 BingoNumbers 객체가 생성된다.")
     @ParameterizedTest
     @CsvSource(value = {"1;3", "1,2,3;4", "1,2,3,4,5,6,7;5", "1,2,4,8,11,16,25,29,32;6", "88,77,66,55,44,33,22,11,1;7"},
