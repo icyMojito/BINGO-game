@@ -1,29 +1,23 @@
 package com.cool.bingo.board;
 
 import com.cool.bingo.BingoSize;
-import com.cool.bingo.BingoType;
 import com.cool.bingo.PlayerType;
 import com.cool.bingo.number.BingoNumber;
 import com.cool.bingo.number.BingoNumbers;
-import com.cool.bingo.numberPicker.BingoNumberPicker;
-import com.cool.bingo.numberPicker.BingoNumberPickerFactory;
 
 public class NumberBingoBoard extends BingoBoard {
     private final BingoSize bingoSize;
 
-    private NumberBingoBoard(BingoSize bingoSize, PlayerType playerType, BingoNumber[][] bingoNumbers,
-                             BingoNumberPicker bingoNumberPicker) {
-        super(playerType, bingoNumbers, bingoNumberPicker);
+    private NumberBingoBoard(BingoSize bingoSize, PlayerType playerType, BingoNumber[][] bingoNumbers) {
+        super(playerType, bingoNumbers);
         this.bingoSize = bingoSize;
     }
 
-    public static NumberBingoBoard of(BingoSize bingoSize, BingoType bingoType, PlayerType playerType,
+    public static NumberBingoBoard of(BingoSize bingoSize, PlayerType playerType,
                                       BingoNumbers bingoNumbers) {
         BingoNumber[][] bingoNums = bingoNumbers.create2dBingoNumbers(bingoSize);
-        BingoNumberPicker bingoNumberPicker = BingoNumberPickerFactory.createBingoNumberPicker(playerType, bingoType,
-                                                                                               bingoSize, bingoNums);
 
-        return new NumberBingoBoard(bingoSize, playerType, bingoNums, bingoNumberPicker);
+        return new NumberBingoBoard(bingoSize, playerType, bingoNums);
     }
 
     @Override

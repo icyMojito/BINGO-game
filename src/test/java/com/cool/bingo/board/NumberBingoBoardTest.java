@@ -5,6 +5,8 @@ import com.cool.bingo.BingoType;
 import com.cool.bingo.PlayerType;
 import com.cool.bingo.number.BingoNumber;
 import com.cool.bingo.number.BingoNumbers;
+import com.cool.bingo.numberPicker.ComputerBingoNumberPicker;
+import com.cool.bingo.numberPicker.ComputerBingoNumberPickerFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,8 +30,7 @@ public class NumberBingoBoardTest {
     void isBingoByUserTest() {
         PlayerType playerType = PlayerType.USER;
         BingoNumbers bingoNumbers = BingoNumbers.of("1,2,3,4,5,6,7,8,9", bingoSize);
-        NumberBingoBoard numberBingoBoard = NumberBingoBoard.of(this.bingoSize, this.bingoType, playerType,
-                                                                bingoNumbers);
+        NumberBingoBoard numberBingoBoard = NumberBingoBoard.of(this.bingoSize, playerType, bingoNumbers);
         numberBingoBoard.mark(BingoNumber.of("1", this.bingoSize));
         numberBingoBoard.mark(BingoNumber.of("2", this.bingoSize));
         numberBingoBoard.mark(BingoNumber.of("3", this.bingoSize));
@@ -45,11 +46,12 @@ public class NumberBingoBoardTest {
     void isBingoByComputerTest() throws IOException {
         PlayerType playerType = PlayerType.COMPUTER;
         BingoNumbers bingoNumbers = BingoNumbers.of("1,2,3,4,5,6,7,8,9", bingoSize);
-        NumberBingoBoard numberBingoBoard = NumberBingoBoard.of(this.bingoSize, this.bingoType, playerType,
-                                                                bingoNumbers);
+        NumberBingoBoard numberBingoBoard = NumberBingoBoard.of(this.bingoSize, playerType, bingoNumbers);
+        ComputerBingoNumberPicker computerBingoNumberPicker =
+                ComputerBingoNumberPickerFactory.createBingoNumberPicker(bingoType, numberBingoBoard.getBingoNumbers());
 
         for (int i = 0; i < this.bingoSize.getSize(); i++) {
-            BingoNumber bingoNumber = numberBingoBoard.pickBingoNumber();
+            BingoNumber bingoNumber = computerBingoNumberPicker.pickBingoNumber();
             numberBingoBoard.mark(bingoNumber);
         }
 

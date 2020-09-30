@@ -7,6 +7,9 @@ import com.cool.bingo.board.BingoBoard;
 import com.cool.bingo.board.BingoBoardFactory;
 import com.cool.bingo.number.BingoNumber;
 import com.cool.bingo.number.BingoNumbers;
+import com.cool.bingo.numberPicker.ComputerBingoNumberPicker;
+import com.cool.bingo.numberPicker.ComputerBingoNumberPickerFactory;
+import com.cool.exception.InvalidBingoNumberException;
 import com.cool.view.InputView;
 import com.cool.view.OutputView;
 
@@ -26,21 +29,35 @@ public class BingoGameApplication {
         BingoNumbers computerBingoNumbers = BingoNumbers.createRandomBingoNumbers(bingoSize);
         BingoBoard computerBingoBoard = BingoBoardFactory.createBingoBoard(bingoSize, bingoType, PlayerType.COMPUTER,
                                                                            computerBingoNumbers);
+        ComputerBingoNumberPicker computerBingoNumberPicker =
+                ComputerBingoNumberPickerFactory.createBingoNumberPicker(bingoType,
+                                                                         computerBingoBoard.getBingoNumbers());
 
         List<BingoBoard> bingoBoards = Arrays.asList(userBingoBoard, computerBingoBoard);
 
         while (true) {
-            if (isBingoAfterNumberMark(bingoBoards)) {
+            if (isBingoAfterNumberMark(bingoBoards, bingoType, bingoSize, computerBingoNumberPicker)) {
                 break;
             }
         }
 
         OutputView.printGameResult(userBingoBoard);
+        InputView.close();
+        OutputView.close();
     }
 
-    private static boolean isBingoAfterNumberMark(List<BingoBoard> bingoBoards) throws IOException {
+    private static boolean isBingoAfterNumberMark(List<BingoBoard> bingoBoards, BingoType bingoType,
+                                                  BingoSize bingoSize,
+                                                  ComputerBingoNumberPicker computerBingoNumberPicker) throws IOException {
         for (BingoBoard bingoBoard : bingoBoards) {
-            BingoNumber bingoNumberToMark = bingoBoard.pickBingoNumber();
+            BingoNumber bingoNumberToMark;
+
+            if (bingoBoard.isUserPlayer()) {
+                bingoNumberToMark = selectUserBingoNumberToMark(bingoType, bingoSize);
+            } else {
+                bingoNumberToMark = computerBingoNumberPicker.pickBingoNumber();
+                OutputView.printComputerBingoNumberToMark(bingoNumberToMark);
+            }
 
             markNumberInBingoBoards(bingoBoards, bingoNumberToMark);
 
@@ -51,9 +68,25 @@ public class BingoGameApplication {
         return false;
     }
 
+    private static BingoNumber selectUserBingoNumberToMark(BingoType bingoType, BingoSize bingoSize) throws IOException {
+        while (true) {
+            OutputView.printRequestToMarkBingoNumber(bingoType, bingoSize);
+            String bingoNumberToMarkValue = InputView.requestPlayerInput();
+            try {
+                return BingoNumber.of(bingoNumberToMarkValue, bingoSize);
+            } catch (InvalidBingoNumberException | IllegalArgumentException e) {
+                OutputView.printNoticeForInvalidBingoNumber(e.getMessage());
+            }
+        }
+    }
+
     private static void markNumberInBingoBoards(List<BingoBoard> bingoBoards, BingoNumber bingoNumberToMark) throws IOException {
         for (BingoBoard board : bingoBoards) {
             board.mark(bingoNumberToMark);
+
+            if (board.isUserPlayer()) {
+                OutputView.printBingoBoard(board.getBingoNumbers());
+            }
         }
     }
 

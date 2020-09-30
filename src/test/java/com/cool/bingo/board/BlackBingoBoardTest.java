@@ -28,7 +28,7 @@ class BlackBingoBoardTest {
     void isBingoByUserTest() {
         PlayerType playerType = PlayerType.USER;
         BingoNumbers bingoNumbers = BingoNumbers.of("1,2,3,4,5,6,7,8,9", bingoSize);
-        BlackBingoBoard blackBingoBoard = BlackBingoBoard.of(this.bingoSize, this.bingoType, playerType, bingoNumbers);
+        BlackBingoBoard blackBingoBoard = BlackBingoBoard.of(this.bingoSize, playerType, bingoNumbers);
 
         Iterator<BingoNumber> userBingoNums = bingoNumbers.getIterator();
         userBingoNums.forEachRemaining(blackBingoBoard::mark);
@@ -41,7 +41,7 @@ class BlackBingoBoardTest {
     void isBingoByComputerTest() {
         PlayerType playerType = PlayerType.COMPUTER;
         BingoNumbers bingoNumbers = BingoNumbers.createRandomBingoNumbers(this.bingoSize);
-        BlackBingoBoard blackBingoBoard = BlackBingoBoard.of(this.bingoSize, this.bingoType, playerType, bingoNumbers);
+        BlackBingoBoard blackBingoBoard = BlackBingoBoard.of(this.bingoSize, playerType, bingoNumbers);
 
         Iterator<BingoNumber> userBingoNums = bingoNumbers.getIterator();
         userBingoNums.forEachRemaining(blackBingoBoard::mark);

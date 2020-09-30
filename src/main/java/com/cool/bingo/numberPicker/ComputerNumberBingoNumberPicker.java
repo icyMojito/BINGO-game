@@ -1,12 +1,10 @@
 package com.cool.bingo.numberPicker;
 
 import com.cool.bingo.number.BingoNumber;
-import com.cool.view.OutputView;
 
-import java.io.IOException;
 import java.util.Objects;
 
-public class ComputerNumberBingoNumberPicker implements BingoNumberPicker {
+public class ComputerNumberBingoNumberPicker implements ComputerBingoNumberPicker {
     private final BingoNumber[][] bingoNumbers;
 
     public ComputerNumberBingoNumberPicker(BingoNumber[][] bingoNumbers) {
@@ -14,29 +12,25 @@ public class ComputerNumberBingoNumberPicker implements BingoNumberPicker {
     }
 
     @Override
-    public BingoNumber pickBingoNumber() throws IOException {
+    public BingoNumber pickBingoNumber() {
         for (int numberCount = 1; numberCount <= bingoNumbers.length; numberCount++) {
             BingoNumber bingoNumberInHorizontalLine = findBingoNumberInHorizontalLine(bingoNumbers, numberCount);
             if (Objects.nonNull(bingoNumberInHorizontalLine)) {
-                OutputView.printComputerBingoNumberToMark(bingoNumberInHorizontalLine);
                 return bingoNumberInHorizontalLine;
             }
 
             BingoNumber bingoNumberInVerticalLine = findBingoNumberInVerticalLine(bingoNumbers, numberCount);
             if (Objects.nonNull(bingoNumberInVerticalLine)) {
-                OutputView.printComputerBingoNumberToMark(bingoNumberInVerticalLine);
                 return bingoNumberInVerticalLine;
             }
 
             BingoNumber bingoNumberInCrossLine = findBingoNumberInCrossLine(bingoNumbers, numberCount);
             if (Objects.nonNull(bingoNumberInCrossLine)) {
-                OutputView.printComputerBingoNumberToMark(bingoNumberInCrossLine);
                 return bingoNumberInCrossLine;
             }
 
             BingoNumber bingoNumberInReversedCrossLine = findBingoNumberInReversedCrossLine(bingoNumbers, numberCount);
             if (Objects.nonNull(bingoNumberInReversedCrossLine)) {
-                OutputView.printComputerBingoNumberToMark(bingoNumberInReversedCrossLine);
                 return bingoNumberInReversedCrossLine;
             }
         }

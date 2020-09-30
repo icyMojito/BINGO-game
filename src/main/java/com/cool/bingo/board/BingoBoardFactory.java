@@ -9,8 +9,8 @@ public class BingoBoardFactory {
     public static BingoBoard createBingoBoard(BingoSize bingoSize, BingoType bingoType, PlayerType playerType,
                                               BingoNumbers bingoNumbers) {
         if (BingoType.BLACK == bingoType) {
-            return BlackBingoBoard.of(bingoSize, bingoType, playerType, bingoNumbers);
+            return BlackBingoBoard.of(bingoSize, playerType, bingoNumbers);
         }
-        return NumberBingoBoard.of(bingoSize, bingoType, playerType, bingoNumbers);
+        return NumberBingoBoard.of(bingoSize, playerType, bingoNumbers);
     }
 }
